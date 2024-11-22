@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Average Finder</title>
+</head>
+<body>
+  <h1>Find the Average of Your Numbers</h1>
+  <form id="average-form">
+    <label for="numbers">Enter numbers separated by comma:</label><br>
+    <input type="text" id="numbers" name="numbers" required>
+    <button type="submit">Calculate Average</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('average-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const numbers = document.getElementById('numbers').value;
+      fetch('/calculate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ numbers: numbers })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('result').innerText = 'Average: ' + data.average;
+      })
+      .catch(error => {
+        document.getElementById('result').innerText = 'Error: ' + error;
+      });
+    });
+  </script>
+</body>
+</html>
